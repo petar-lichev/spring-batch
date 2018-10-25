@@ -10,14 +10,29 @@ http://www.springframework.org/schema/batch/spring-batch-2.2.xsd">
 
 	<beans:import resource="../launch-context.xml" />
 
+	<!-- <beans:bean id="idIncrementer" class="org.springframework.batch.core.launch.support.RunIdIncrementer" 
+		/> -->
+	<beans:bean id="timestamperIncrementer"
+		class="com.example.batchb.chapter4.DailyJobTimestamper" />
+
+ <beans:bean autowire="default">
+ </beans:bean>
+	<beans:bean id="loggingListener"
+		class="com.example.batchb.chapter4.JobLoggerListener" />
+
 	<beans:bean id="helloWorld"
-		class="com.example.batchb.job.HelloWorld" />
+		class="com.example.batchb.job.HelloWorld">
+	</beans:bean>
 
 	<step id="helloWorldStep">
 		<tasklet ref="helloWorld" />
 	</step>
 
-	<job id="helloWorldJob">
+	<job id="helloWorldJob" restartable="true"
+		incrementer="timestamperIncrementer">
+		<listeners>
+			<listener ref="loggingListener"/>
+		</listeners>
 		<step id="step1" parent="helloWorldStep" />
 	</job>
 </beans:beans>
