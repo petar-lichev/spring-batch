@@ -11,9 +11,6 @@ http://www.springframework.org/schema/batch/spring-batch-2.2.xsd">
 	<beans:import resource="../launch-context.xml" />
 
 
-	<beans:bean autowire="default">
-	</beans:bean>
-
 	<beans:bean id="passTasklet"
 		class="com.example.batchb.chapter4.LogicTasklet">
 		<beans:property name="success" value="true"></beans:property>

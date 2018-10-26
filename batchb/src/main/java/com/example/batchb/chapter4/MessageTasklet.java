@@ -14,6 +14,13 @@ public class MessageTasklet implements Tasklet {
 
 	public RepeatStatus execute(StepContribution arg0, ChunkContext arg1) throws Exception {
 		System.out.println(message);
+		System.out.println(message);
+		System.out.println(message);
+		System.out.println(message);
+		System.out.println(message);
+		System.out.println(message);
+		System.out.println(message);
+		System.out.println(message);
 
 		return RepeatStatus.FINISHED;
 	}
