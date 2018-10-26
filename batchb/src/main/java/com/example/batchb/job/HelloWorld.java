@@ -16,32 +16,16 @@ import org.springframework.context.annotation.Configuration;
 @EnableBatchProcessing
 public class HelloWorld implements Tasklet {
 
-	private String name;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	@Override
 	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-		String name = (String) chunkContext.getStepContext().getJobParameters().get("name");
-		Long id = (Long) chunkContext.getStepContext().getJobParameters().get("run.id");
-		ExecutionContext job_context = chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext();
-		ExecutionContext execution_context = chunkContext.getStepContext().getStepExecution().getExecutionContext();
 		
-		job_context.put("imeto", name);
-		execution_context.put("user.name", name);
-		// String name = "test";
-		System.out.println("Hello, " + name + " ------------------> " + id);
-		System.out.println("Hello, " + name + " ------------------> " + id);
-		System.out.println("Hello, " + name + " ------------------> " + id);
-		System.out.println("Hello, " + name + " ------------------> " + id);
-		System.out.println("Hello, " + name + " ------------------> " + id);
-		System.out.println("Hello, " + name + " ------------------> " + id);
+		System.out.println("Hello, ");
+		System.out.println("Hello, ");
+		System.out.println("Hello, ");
+		System.out.println("Hello, ");
+		System.out.println("Hello, ");
+		System.out.println("Hello, ");
 		
 		return RepeatStatus.FINISHED;
 	}
