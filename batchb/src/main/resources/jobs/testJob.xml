@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+	xmlns="http://www.springframework.org/schema/batch"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+http://www.springframework.org/schema/batch
+http://www.springframework.org/schema/batch/spring-batch-2.2.xsd">
+
+	<beans:import resource="../launch-context.xml" />
+
+
+	<beans:bean autowire="default">
+	</beans:bean>
+
+	<beans:bean id="passTasklet"
+		class="com.example.batchb.chapter4.LogicTasklet">
+		<beans:property name="success" value="true"></beans:property>
+	</beans:bean>
+
+	<beans:bean id="successTasklet"
+		class="com.example.batchb.chapter4.MessageTasklet">
+		<beans:property name="message"
+			value="The step succeeded!"></beans:property>
+	</beans:bean>
+
+	<beans:bean id="failTasklet"
+		class="com.example.batchb.chapter4.MessageTasklet">
+		<beans:property name="message" value="The step failed!"></beans:property>
+	</beans:bean>
+
+	<job id="conditionalStepLogicJob">
+		<step id="step1">
+			<tasklet ref="passTasklet" />
+			<next on="*" to="step2a" />
+			<next on="FAILED" to="step2b" />
+		</step>
+		<step id="step2a">
+			<tasklet ref="successTasklet" />
+		</step>
+		<step id="step2b">
+			<tasklet ref="failTasklet" />
+		</step>
+	</job>
+
+</beans:beans>
