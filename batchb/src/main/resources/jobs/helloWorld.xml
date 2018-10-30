@@ -11,12 +11,45 @@ http://www.springframework.org/schema/batch/spring-batch-2.2.xsd">
 	<beans:import resource="../launch-context.xml" />
 
 	<beans:bean id="helloWorld"
-		class="com.example.batchb.job.HelloWorld" />
+		class="com.example.batchb.job.HelloWorld" scope="step">
+		<beans:property name="explorer" ref="jobExplorer" />
+	</beans:bean>
+
+	<beans:bean id="itemReader"
+		class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<beans:property name="dataSource" ref="dataSource" />
+		<beans:property name="sql"
+			value="select lawsuite.lawsuite_id as lawsuite_id, lawyer.name as name, lawyer.email as email from lawyer inner join lawsuite on lawyer.lawyer_id = lawsuite.lawyer_lawyer_id" />
+		<beans:property name="rowMapper">
+			<beans:bean
+				class="com.example.batchb.model.ProbenRowMapper" />
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="noOpItemWriter"
+		class="com.example.batchb.model.NoOpItemWriter">
+	</beans:bean>
+
+	<beans:bean id="customerValidatingProcessor"
+		class="org.springframework.batch.item.validator.ValidatingItemProcessor">
+		<beans:property name="validator">
+			<beans:bean
+				class="com.example.batchb.model.ProbenDTOProcessor" />
+		</beans:property>
+	</beans:bean>
+
 	<step id="helloWorldStep">
 		<tasklet ref="helloWorld" />
 	</step>
 	<job id="helloWorldJob">
-		<step id="step1" parent="helloWorldStep" />
+		<step id="step1" parent="helloWorldStep" next="step2">
+		</step>
+		<step id="step2">
+			<beans:chunk reader="itemReader"
+				processor="customerValidatingProcessor" writer="noOpItemWriter"
+				commit-interval="10" />
+		</step>
+
 	</job>
 
 </beans:beans>
